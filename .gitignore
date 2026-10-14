@@ -1,0 +1,17 @@
+# env / secrets
+.env
+.env.local
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.venv/
+backend/data/
+
+# node
+frontend/node_modules/
+frontend/.next/
+frontend/coverage/
+*.tsbuildinfo

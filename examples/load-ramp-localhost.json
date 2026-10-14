@@ -1,0 +1,20 @@
+{
+  "name": "Patients load ramp (localhost)",
+  "base_url": "http://localhost:8080",
+  "path": "/api/v1/patients",
+  "method": "GET",
+  "query": [{ "key": "delay_ms", "value": "50" }],
+  "headers": [{ "key": "X-Test-Run", "value": "loadlab" }],
+  "body": { "type": "none", "content": "" },
+  "auth": { "type": "bearer", "token": "replace-with-a-local-dev-token" },
+  "timeout_s": 10,
+  "duration_s": 120,
+  "rate_unit": "rps",
+  "rate": 20,
+  "max_concurrency": 25,
+  "preset": "load",
+  "follow_redirects": false,
+  "max_redirects": 0,
+  "retries": 0,
+  "verify_tls": true
+}

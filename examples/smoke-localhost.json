@@ -1,0 +1,20 @@
+{
+  "name": "Patients smoke (localhost)",
+  "base_url": "http://localhost:8080",
+  "path": "/api/v1/patients",
+  "method": "GET",
+  "query": [{ "key": "delay_ms", "value": "20" }],
+  "headers": [],
+  "body": { "type": "none", "content": "" },
+  "auth": { "type": "none" },
+  "timeout_s": 5,
+  "duration_s": 20,
+  "rate_unit": "rpm",
+  "rate": 120,
+  "max_concurrency": 5,
+  "preset": "smoke",
+  "follow_redirects": false,
+  "max_redirects": 0,
+  "retries": 0,
+  "verify_tls": true
+}

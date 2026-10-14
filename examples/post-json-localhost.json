@@ -1,0 +1,20 @@
+{
+  "name": "Create patient (localhost)",
+  "base_url": "http://localhost:8080",
+  "path": "/api/v1/patients",
+  "method": "POST",
+  "query": [],
+  "headers": [],
+  "body": { "type": "json", "content": "{\"name\": \"Test Patient\", \"ward\": \"A\"}" },
+  "auth": { "type": "none" },
+  "timeout_s": 10,
+  "duration_s": 30,
+  "rate_unit": "rps",
+  "rate": 5,
+  "max_concurrency": 10,
+  "preset": "baseline",
+  "follow_redirects": false,
+  "max_redirects": 0,
+  "retries": 0,
+  "verify_tls": true
+}

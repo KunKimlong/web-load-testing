@@ -1,0 +1,20 @@
+{
+  "name": "Backpressure demo (slow endpoint)",
+  "base_url": "http://localhost:8080",
+  "path": "/slow",
+  "method": "GET",
+  "query": [{ "key": "ms", "value": "800" }],
+  "headers": [],
+  "body": { "type": "none", "content": "" },
+  "auth": { "type": "none" },
+  "timeout_s": 5,
+  "duration_s": 30,
+  "rate_unit": "rps",
+  "rate": 20,
+  "max_concurrency": 8,
+  "preset": "stress",
+  "follow_redirects": false,
+  "max_redirects": 0,
+  "retries": 0,
+  "verify_tls": true
+}

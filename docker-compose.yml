@@ -1,0 +1,58 @@
+# LoadLab local stack. Ports are bound to 127.0.0.1 only: authentication is disabled by default.
+# For a shared/non-local deployment set LOADLAB_AUTH_MODE=token and LOADLAB_AUTH_TOKEN (see .env.example).
+
+services:
+  backend:
+    build:
+      context: ./backend
+      target: runtime
+    image: loadlab-backend:local
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      LOADLAB_DATABASE_URL: ${LOADLAB_DATABASE_URL:-sqlite+aiosqlite:////app/data/loadlab.db}
+      LOADLAB_CORS_ORIGINS: ${LOADLAB_CORS_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
+      # Hosts allowed to resolve to private/loopback addresses (inside the container network).
+      LOADLAB_LOCAL_TARGET_HOSTS: ${LOADLAB_LOCAL_TARGET_HOSTS:-localhost,127.0.0.1,::1,mock-target,host.docker.internal}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # lets you register services running on your machine
+    volumes:
+      - loadlab-data:/app/data
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      mock-target:
+        condition: service_started
+    stop_grace_period: 20s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+        NEXT_PUBLIC_DEFAULT_TARGET: http://mock-target:8080
+    image: loadlab-frontend:local
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Safe local service to load test (same image as the backend, different entrypoint).
+  mock-target:
+    image: loadlab-backend:local
+    command: ["uvicorn", "app.mock_target:app", "--host", "0.0.0.0", "--port", "8080", "--no-access-log"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health')"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+    ports:
+      - "127.0.0.1:8080:8080"
+    restart: unless-stopped
+
+volumes:
+  loadlab-data:

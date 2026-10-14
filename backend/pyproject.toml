@@ -1,0 +1,24 @@
+[project]
+name = "loadlab-backend"
+version = "1.0.0"
+description = "LoadLab: authorized HTTP load-testing backend"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "ASYNC", "S"]
+ignore = ["S101", "B008", "S311", "E501"]  # long lines: handled by ruff format; long strings allowed
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S", "B"]
+"app/safety/network.py" = ["ASYNC109"]  # method signatures are defined by httpcore
